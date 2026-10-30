@@ -113,6 +113,7 @@ All checks ran headless (Playwright + Chromium) against this repo, served with
 | Determinism (`?record=1&maxtick=2`) | two fresh loads at the same tick produced **byte-identical PNGs** (sha256 match) |
 | Boats loop → dock → leave | verified by sampling boat state machines at 4× speed |
 | Tilt-shift profile (pixel stats) | whole island in the sharp band; foreground/background softened to ~0.5× mid-frame detail (tunable: Soft focus button, `?dof=off`) |
+| Visual review loop (v2 fixes) | frames inspected with a vision model at deviceScaleFactor 2 — caught the retina upscale + unlit-material bugs that dpr-1 numeric tests missed |
 
 ## GitHub Pages
 
