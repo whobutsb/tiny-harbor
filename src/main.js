@@ -180,6 +180,14 @@ ui.sound.addEventListener('click', () => {
   ui.sound.classList.toggle('on', state.soundOn);
   audio.setOn(state.soundOn);
 });
+const dofBtn = document.getElementById('dofBtn');
+function setSoftFocus(on) {
+  state.softFocus = on;
+  dofBtn.textContent = on ? 'Soft focus' : 'Sharp focus';
+  dofBtn.classList.toggle('on', on);
+}
+dofBtn.addEventListener('click', () => { setSoftFocus(!state.softFocus); markIdle(); });
+if (params.get('dof') === 'off') setSoftFocus(false);
 if (params.has('weather')) setWeather(params.get('weather'));
 
 // ---------- main loop ----------
@@ -273,8 +281,10 @@ function frame(now) {
   const bokehU = bokeh.uniforms || bokeh.materialBokeh?.uniforms;
   if (bokehU) {
     bokehU.focus.value = camera.position.distanceTo(controls.target);
-    bokehU.aperture.value = state.aperture ?? (state.record ? 0.0032 : 0.0024);
-    bokehU.maxblur.value = state.maxblur ?? 0.011;
+    // sharp band half-width = maxblur/aperture; keep it ≥ island scale so the diorama reads crisp
+    const soft = state.softFocus !== false;
+    bokehU.aperture.value = state.aperture ?? (soft ? (state.record ? 0.0009 : 0.0005) : 0.0);
+    bokehU.maxblur.value = state.maxblur ?? (soft ? 0.009 : 0.0);
   }
   bloom.strength = 0.10 + sky.nightF * 0.55 + sky.golden * 0.18 + state.snowAmt * 0.08;
 

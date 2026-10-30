@@ -25,6 +25,7 @@ export const state = {
   record: false,
   aperture: null,      // optional DoF override (tuning/testing)
   maxblur: null,
+  softFocus: true,     // tilt-shift blur on/off (UI toggle)
 };
 
 export function smoothstep(e0, e1, x) {

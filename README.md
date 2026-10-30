@@ -43,6 +43,7 @@ Bottom bar:
 - **Speed** — 0.5× / 1× / 2× / 4× simulation speed.
 - **Weather** — Clear, Rain (dark clouds, streaks, sea ripples, wet sheen) or
   Snow (slow accumulation on roofs, icy sea, softer light).
+- **Soft focus** — toggles the tilt-shift blur on/off (also `?dof=off` in the URL).
 - **Sound** — procedural WebAudio surf wash, wind and a distant harbor bell.
   Off by default; nothing plays until you toggle it.
 
@@ -111,7 +112,7 @@ All checks ran headless (Playwright + Chromium) against this repo, served with
 | Record mode canvas | fixed **1080×1350**, UI hidden, scripted film advances |
 | Determinism (`?record=1&maxtick=2`) | two fresh loads at the same tick produced **byte-identical PNGs** (sha256 match) |
 | Boats loop → dock → leave | verified by sampling boat state machines at 4× speed |
-| Tilt-shift profile (pixel stats) | mid-frame band ~6× sharper than foreground/background bands |
+| Tilt-shift profile (pixel stats) | whole island in the sharp band; foreground/background softened to ~0.5× mid-frame detail (tunable: Soft focus button, `?dof=off`) |
 
 ## GitHub Pages
 
