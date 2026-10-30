@@ -20,6 +20,7 @@ function addSway(mat, amp) {
       #endif`);
   };
   mat.customProgramCacheKey = () => 'sway' + amp;
+  return mat;
 }
 
 function softDotTexture() {

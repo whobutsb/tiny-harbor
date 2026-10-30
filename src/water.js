@@ -16,7 +16,7 @@ export function buildWater(scene) {
     uRain: { value: 0 },
     uSnow: { value: 0 },
     uDeep: { value: new THREE.Color('#1f6f92') },
-    uShallow: { value: new THREE.Color('#63c8c4') },
+    uShallow: { value: new THREE.Color('#4db8b0') },
     uSkyTint: { value: new THREE.Color('#bfe6f5') },
     uHorizon: { value: new THREE.Color('#d3ecf7') },
     fogColor: { value: new THREE.Color('#cccccc') },
@@ -94,9 +94,10 @@ export function buildWater(scene) {
         float rr = length(vWorld.xz); // (r already, keep readable)
         float band = abs(d - wob*0.4 - vWave*1.2);
         float foam = smoothstep(0.9, 0.05, band) * smoothstep(R+3.0, R-2.0, rr);
+
         // crest sparkle lines on waves outside the bay
         float crests = smoothstep(0.86, 1.0, sin(d*1.2 - t*1.6 + th*5.0)) * 0.12 * (1.0-depth*0.4);
-        col = mix(col, vec3(0.97,0.99,1.0), clamp(foam + crests, 0.0, 1.0) * (0.25 + uDayF*0.75));
+        col = mix(col, vec3(0.97,0.99,1.0), clamp(foam + crests, 0.0, 1.0) * (0.2 + uDayF*0.45));
 
         // rain: dull the water, add ripple speckle
         if(uRain > 0.01){

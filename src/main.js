@@ -50,6 +50,8 @@ function applySize() {
   } else {
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     renderer.setSize(innerWidth, innerHeight);
+    // composer caches pixel ratio at construction — must follow the renderer or we upscale on retina
+    composer.setPixelRatio(renderer.getPixelRatio());
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     composer.setSize(innerWidth, innerHeight);
@@ -94,7 +96,9 @@ const composer = new EffectComposer(renderer, rt);
 composer.addPass(new RenderPass(scene, camera));
 const bokeh = new BokehPass(scene, camera, { focus: 50, aperture: 0.0022, maxblur: 0.011 });
 composer.addPass(bokeh);
-const bloom = new UnrealBloomPass(new THREE.Vector2(4, 4), 0.25, 0.7, 0.82);
+// bloom runs on pre-tonemap HDR values: sunlit surfaces reach 1.5-3.0, so the threshold must
+// sit above 1 or every lit face blooms (that washed-out white-tree look). Only emissive/highlights glow.
+const bloom = new UnrealBloomPass(new THREE.Vector2(4, 4), 0.25, 0.45, 1.15);
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
@@ -194,7 +198,7 @@ if (params.has('weather')) setWeather(params.get('weather'));
 const clockEl = ui.clock;
 let last = performance.now(), filmTick = 0;
 let fpsFrames = 0, fpsT0 = performance.now();
-const api = window.__tiny = { ready: false, filmDone: false, fps: 0, state, modules: { boats },
+const api = window.__tiny = { ready: false, filmDone: false, fps: 0, state, modules: { boats }, fx: { bloom, bokeh, scene },
   get filmT() { return filmTick; },
   setDay(t) { state.time = t; state.paused = true; },
   snapWeather(w) {
@@ -284,9 +288,9 @@ function frame(now) {
     // sharp band half-width = maxblur/aperture; keep it ≥ island scale so the diorama reads crisp
     const soft = state.softFocus !== false;
     bokehU.aperture.value = state.aperture ?? (soft ? (state.record ? 0.0009 : 0.0005) : 0.0);
-    bokehU.maxblur.value = state.maxblur ?? (soft ? 0.009 : 0.0);
+    bokehU.maxblur.value = state.maxblur ?? (soft ? 0.007 : 0.0);
   }
-  bloom.strength = 0.10 + sky.nightF * 0.55 + sky.golden * 0.18 + state.snowAmt * 0.08;
+  bloom.strength = 0.03 + sky.nightF * 0.5 + sky.golden * 0.12 + state.snowAmt * 0.06;
 
   composer.render();
 

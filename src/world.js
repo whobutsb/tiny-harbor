@@ -102,7 +102,7 @@ export function computeSky(t) {
 
   return {
     elev, dayF, nightF, golden, sunDir, moonDir, zenith, horizon, fogColor, sunColor,
-    sunI: dayF * 2.9,
+    sunI: dayF * 2.35,
     moonI: nightF * 0.6,
     hemiSky: horizon.clone().lerp(zenith, 0.5).multiplyScalar(0.9 + dayF * 0.4),
     hemiGround: new THREE.Color('#141a2c').lerp(new THREE.Color('#7d8a5e'), dayF),

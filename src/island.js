@@ -4,8 +4,8 @@ import { islandRadius, islandHeight, CLIFF_TH, PIER_TH, smoothstep, lerp, mulber
 
 const SAND = new THREE.Color('#e8d9ab');
 const SAND_WET = new THREE.Color('#c9b98a');
-const GRASS_A = new THREE.Color('#7fb564');
-const GRASS_B = new THREE.Color('#93c273');
+const GRASS_A = new THREE.Color('#6fa855');
+const GRASS_B = new THREE.Color('#84b761');
 const ROCK = new THREE.Color('#9d9488');
 const ROCK_DK = new THREE.Color('#7f7669');
 
